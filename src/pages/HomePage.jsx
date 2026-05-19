@@ -1,9 +1,149 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useChaos } from '../context/ChaosContext.jsx'
 
+function ScratchCard({ onComplete }) {
+  const canvasRef = useRef(null)
+  const [isScratching, setIsScratching] = useState(false)
+  const [completed, setCompleted] = useState(false)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    // Draw scratchable surface with beautiful gray gold gradient
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
+    grad.addColorStop(0, '#9ca3af')
+    grad.addColorStop(1, '#6b7280')
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    // Add pattern lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)'
+    ctx.lineWidth = 2
+    for (let i = 0; i < canvas.width; i += 8) {
+      ctx.beginPath()
+      ctx.moveTo(i, 0)
+      ctx.lineTo(i + 15, canvas.height)
+      ctx.stroke()
+    }
+
+    // Add instruction text
+    ctx.fillStyle = '#111827'
+    ctx.font = '900 11px system-ui, -apple-system, sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('🐈 SCRATCH FOR HINT 🐈', canvas.width / 2, canvas.height / 2)
+  }, [])
+
+  const getMousePos = (e) => {
+    const canvas = canvasRef.current
+    if (!canvas) return { x: 0, y: 0 }
+    const rect = canvas.getBoundingClientRect()
+    
+    // Handle touch vs mouse
+    let clientX, clientY
+    if (e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX
+      clientY = e.touches[0].clientY
+    } else {
+      clientX = e.clientX
+      clientY = e.clientY
+    }
+
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    }
+  }
+
+  const scratch = (x, y) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    ctx.globalCompositeOperation = 'destination-out'
+    ctx.beginPath()
+    ctx.arc(x, y, 16, 0, Math.PI * 2)
+    ctx.fill()
+
+    checkCompletion()
+  }
+
+  const checkCompletion = () => {
+    if (completed) return
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    const pixels = imageData.data
+    let transparentCount = 0
+    // Sample alpha values
+    for (let i = 3; i < pixels.length; i += 4) {
+      if (pixels[i] === 0) {
+        transparentCount++
+      }
+    }
+
+    const totalPixels = canvas.width * canvas.height
+    const percent = (transparentCount / totalPixels) * 100
+
+    if (percent > 45 && !completed) {
+      setCompleted(true)
+      // Erase whole canvas to reveal fully
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      onComplete()
+    }
+  }
+
+  const handleMouseDown = (e) => {
+    setIsScratching(true)
+    const pos = getMousePos(e)
+    scratch(pos.x, pos.y)
+  }
+
+  const handleMouseMove = (e) => {
+    if (!isScratching || completed) return
+    // Prevent scrolling on mobile while scratching
+    if (e.cancelable) e.preventDefault()
+    const pos = getMousePos(e)
+    scratch(pos.x, pos.y)
+  }
+
+  const handleMouseUp = () => {
+    setIsScratching(false)
+  }
+
+  return (
+    <div className="scratch-card-container">
+      <div className="scratch-card-underlay">
+        <span className="glow-text">Hint: <code>2x e^(x^2)</code></span>
+      </div>
+      {!completed && (
+        <canvas
+          ref={canvasRef}
+          width={240}
+          height={60}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleMouseDown}
+          onTouchMove={handleMouseMove}
+          onTouchEnd={handleMouseUp}
+          className="scratch-canvas"
+        />
+      )}
+    </div>
+  )
+}
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -89,6 +229,7 @@ export default function HomePage() {
       return
     }
     setBookingStep(2) // Move to Captcha
+
   }
 
   const handleCaptchaVerify = (e) => {
@@ -100,6 +241,17 @@ export default function HomePage() {
       setCaptchaError("Wrong answer. Are you sure you are a human or just an uneducated cat?")
       addNotification("❌ CAPTCHA verification failed!", "error")
     }
+  }
+
+  const handleScratchComplete = () => {
+    try {
+      const audio = new Audio('/Aaye.mp3')
+      audio.volume = 1.0
+      audio.play().catch(e => console.log('Audio play failed:', e))
+    } catch (e) {
+      console.log('Audio failed:', e)
+    }
+    addNotification("😜 Aayein? You revealed the hint! Correct Answer is: 2x e^(x^2)", "info")
   }
 
   // Make the correct captcha answer button evade on hover
@@ -365,6 +517,11 @@ export default function HomePage() {
                   />
                 </div>
 
+                <div className="scratch-card-section">
+                  <p className="scratch-card-instruction">💡 Need a hint? Scratch the card below:</p>
+                  <ScratchCard onComplete={handleScratchComplete} />
+                </div>
+
                 {captchaError && <p className="captcha-error-msg">{captchaError}</p>}
 
                 <div className="captcha-actions">
@@ -392,6 +549,7 @@ export default function HomePage() {
                   >
                     I want virtual pizza instead
                   </button>
+
                 </div>
               </form>
             )}

@@ -972,3 +972,67 @@ body.rage-active * {
 .tsunami-rewind-top-btn:active {
   transform: translateX(-50%) translateY(0);
 }
+
+/* Scratch Card CAPTCHA styling */
+.scratch-card-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px 0;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px dashed rgba(201, 138, 68, 0.3);
+}
+
+.scratch-card-instruction {
+  font-size: 0.85rem;
+  color: #c98a44;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.scratch-card-container {
+  position: relative;
+  width: 240px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
+  background: #111827; /* Dark background underlay */
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.scratch-card-underlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.scratch-card-underlay .glow-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+  font-family: monospace;
+  user-select: all;
+}
+
+.scratch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  cursor: crosshair;
+  touch-action: none;
+}

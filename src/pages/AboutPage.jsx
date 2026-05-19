@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useChaos } from '../context/ChaosContext.jsx'
 
@@ -72,6 +72,11 @@ export default function AboutPage() {
   const [visitorCount, setVisitorCount] = useState(0)
   const [activeTeamMember, setActiveTeamMember] = useState(null)
 
+  const rewardRef = useRef(null)
+  const [rewardVisible, setRewardVisible] = useState(false)
+  const yeLeAudioRef = useRef(null)
+  const gopgopAudioRef = useRef(null)
+
   useEffect(() => {
     // Fake visitor counter that keeps changing
     setVisitorCount(Math.floor(Math.random() * 3) + 1)
@@ -79,6 +84,46 @@ export default function AboutPage() {
       setVisitorCount(prev => Math.max(1, prev + (Math.random() > 0.5 ? 1 : -1)))
     }, 5000)
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const a1 = new Audio('/Ye Le Meme.mp3')
+    a1.loop = true
+    a1.volume = 0.5
+    yeLeAudioRef.current = a1
+
+    const a2 = new Audio('/gopgopgop.mp3')
+    a2.loop = true
+    a2.volume = 0.5
+    gopgopAudioRef.current = a2
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setRewardVisible(true)
+          a1.play().catch(() => {})
+          a2.play().catch(() => {})
+        } else {
+          setRewardVisible(false)
+          a1.pause()
+          a2.pause()
+        }
+      })
+    }, { threshold: 0.15 })
+
+    const currentRewardRef = rewardRef.current
+    if (currentRewardRef) {
+      observer.observe(currentRewardRef)
+    }
+
+    return () => {
+      if (currentRewardRef) {
+        observer.unobserve(currentRewardRef)
+      }
+      observer.disconnect()
+      a1.pause()
+      a2.pause()
+    }
   }, [])
 
   return (
@@ -267,6 +312,56 @@ export default function AboutPage() {
             </button>
           </div>
         </div>
+      </section>
+
+      {/* Special Thank You Note */}
+      <section className="about-thankyou-section">
+        <div className="thankyou-text-col">
+          <h2 className="thankyou-title">Heartfelt Thanks ❤️</h2>
+          <p className="thankyou-note">
+            Building this intentionally cursed food application was a journey of absolute madness and laughter. 
+            We wanted to capture the ultimate friction of modern UI/UX while packaging it in a clean, high-fidelity shell. 
+            A special thanks to you for scrolling all the way to the bottom of our digital experiment! You are officially a survivor.
+          </p>
+          <p className="thankyou-signature">— The FOODEAT Developer Team</p>
+        </div>
+        <div className="thankyou-img-col">
+          <div className="thankyou-img-wrapper">
+            <img src="/about.jpg" alt="Our story illustration" className="thankyou-img" />
+          </div>
+        </div>
+      </section>
+
+      {/* Meet Our Rider */}
+      <section className="about-rider-section">
+        <h2 className="rider-section-title">Meet Our Rider 🛵</h2>
+        <p className="rider-section-subtitle">Armed with raw speed, dynamic drift, and a strong disinterest in correct routes.</p>
+        <div className="rider-gif-container">
+          <img src="/ride.gif" alt="Legendary delivery rider in action" className="rider-gif" />
+        </div>
+      </section>
+
+      {/* Reward Section */}
+      <section className="about-reward-section" ref={rewardRef}>
+        <h2 className="reward-title">Yahan tak aane ke liye shukriya! 🎉</h2>
+        <p className="reward-subtitle">
+          As a reward for your unmatched patience, please accept this beautiful image and enjoy the musical symphony of our soul!
+        </p>
+        <div className="reward-img-container">
+          <img src="/ye leee.jpg" alt="Your ultimate reward" className="reward-img" />
+        </div>
+        
+        {rewardVisible && (
+          <div className="audio-status-badge">
+            <div className="audio-waves">
+              <span className="audio-bar"></span>
+              <span className="audio-bar"></span>
+              <span className="audio-bar"></span>
+              <span className="audio-bar"></span>
+            </div>
+            <span>🔊 Double Meme Symphony Playing in Loop...</span>
+          </div>
+        )}
       </section>
 
       {/* Footer */}

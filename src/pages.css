@@ -1,4 +1,4 @@
-﻿/* ===== About Page Styles ===== */
+/* ===== About Page Styles ===== */
 .about-page {
   min-height: 100vh;
   background: var(--bg-primary);
@@ -517,6 +517,249 @@
   font-size: 0.75rem;
   color: var(--text-muted);
   opacity: 0.7;
+}
+
+/* Custom bottom sections for About Page */
+.about-thankyou-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-2xl);
+  padding: var(--space-3xl) var(--space-xl);
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  border-top: 1px solid var(--border-color);
+}
+
+.thankyou-text-col {
+  padding-left: var(--space-xl);
+  text-align: left;
+}
+
+.thankyou-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  color: var(--neon-pink);
+  margin-bottom: var(--space-md);
+  letter-spacing: 1px;
+}
+
+.thankyou-note {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+}
+
+.thankyou-signature {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  color: var(--neon-pink);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.thankyou-img-col {
+  display: flex;
+  justify-content: center;
+}
+
+.thankyou-img-wrapper {
+  position: relative;
+  max-width: 450px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  border: 2px solid var(--border-color);
+}
+
+.thankyou-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.thankyou-img-wrapper:hover .thankyou-img {
+  transform: scale(1.05);
+}
+
+/* Meet Our Rider Section */
+.about-rider-section {
+  padding: var(--space-3xl) var(--space-xl);
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.rider-section-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 1px;
+}
+
+.rider-section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.rider-gif-container {
+  max-width: 700px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  border: 3px solid var(--border-color);
+}
+
+.rider-gif {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Reward Section */
+.about-reward-section {
+  padding: var(--space-3xl) var(--space-xl);
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, #0d0c1d 100%);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  position: relative;
+}
+
+.reward-title {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  color: #38bdf8;
+  margin-bottom: var(--space-md);
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+.reward-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reward-img-container {
+  max-width: 480px;
+  margin: 0 auto var(--space-xl);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  border: 2px solid var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.reward-img-container:hover {
+  transform: scale(1.03) rotate(1deg);
+}
+
+.reward-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.audio-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: var(--radius-full);
+  color: #38bdf8;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.1);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.audio-waves {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 14px;
+}
+
+.audio-bar {
+  width: 3px;
+  height: 100%;
+  background-color: #38bdf8;
+  border-radius: 3px;
+  animation: audioWave 1.2s infinite ease-in-out;
+}
+
+.audio-bar:nth-child(2) { animation-delay: 0.2s; }
+.audio-bar:nth-child(3) { animation-delay: 0.4s; }
+.audio-bar:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes audioWave {
+  0%, 100% { height: 3px; }
+  50% { height: 14px; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 4px 15px rgba(56, 189, 248, 0.1); }
+  50% { box-shadow: 0 4px 25px rgba(56, 189, 248, 0.3); border-color: rgba(56, 189, 248, 0.4); }
+}
+
+/* Responsive adjustment for About Page */
+@media (max-width: 768px) {
+  .about-thankyou-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: var(--space-lg);
+    padding: var(--space-2xl) var(--space-md);
+  }
+  .thankyou-text-col {
+    padding-left: 0;
+    text-align: center;
+  }
+  .thankyou-title {
+    font-size: 2.1rem;
+  }
+  .thankyou-note {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .thankyou-img-wrapper {
+    max-width: 100%;
+  }
+
+  .about-rider-section {
+    padding: var(--space-2xl) var(--space-md);
+  }
+  .rider-section-title {
+    font-size: 2.1rem;
+  }
+  .rider-section-subtitle {
+    font-size: 1rem;
+    margin-bottom: var(--space-lg);
+  }
+  .rider-gif-container {
+    max-width: 100%;
+  }
+
+  .about-reward-section {
+    padding: var(--space-2xl) var(--space-md);
+  }
+  .reward-title {
+    font-size: 1.8rem;
+  }
+  .reward-subtitle {
+    font-size: 1rem;
+  }
+  .reward-img-container {
+    max-width: 100%;
+  }
 }
 
 /* Animations */

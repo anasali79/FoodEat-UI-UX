@@ -85,3 +85,15 @@ This document tracks all the custom-built, intentionally frustrating, and hilari
 *   **How it works:** A blue floating 🌊 button sits in the bottom-left corner of the viewport. Clicking it triggers an app-wide cleanse.
 *   **The Animation:** A giant ocean wave sweeps up the entire viewport. As the wave sweeps, all buttons, headers, inputs, cards, and images get a float-and-drift animation, rotating and translating off-screen like they are washed away.
 *   **The Blank State:** Once washed away, the screen turns entirely blank white. A peaceful message fades in to soothe the user's mind, with a button to return to the chaotic food app when they are ready.
+
+### 11. Scratch Card CAPTCHA Hint & Aayein Sound 🐈‍⬛
+*   **Code Location:** `src/pages/HomePage.jsx`, `src/components.css`
+*   **How it works:** When reserving a table, users face the mathematical derivative CAPTCHA.
+*   **The Scratch Card:** We've integrated an interactive HTML5 scratch card. Users can scratch the silver layer to reveal the correct hint: `2x e^(x^2)`.
+*   **The Reward:** Once the user scratches at least 45% of the card, the card automatically clears, the hint glows, and the viral Indian meme sound **"Aayein?"** plays from `/Aaye.mp3`.
+
+### 12. About Page Survivor Reward & Double Meme Symphony 🏆
+*   **Code Location:** `src/pages/AboutPage.jsx`, `src/pages.css`
+*   **How it works:** When the user scrolls to the very bottom of the About page, a hidden reward section triggers.
+*   **The Reward:** It displays a lovely thank you note alongside `/about.jpg`, the legendary delivery rider GIF (`/ride.gif`), and the ultimate reward image (`/ye leee.jpg`).
+*   **The Symphony:** Two hilarious meme soundtracks—`Ye Le Meme.mp3` and `gopgopgop.mp3`—automatically play in a looped mix, but *only* when the reward section is visible in the viewport. If the user scrolls away, the music pauses instantly!
