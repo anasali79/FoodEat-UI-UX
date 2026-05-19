@@ -8,6 +8,7 @@ function ScratchCard({ onComplete }) {
   const canvasRef = useRef(null)
   const [isScratching, setIsScratching] = useState(false)
   const [completed, setCompleted] = useState(false)
+  const drawCount = useRef(0)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -72,7 +73,10 @@ function ScratchCard({ onComplete }) {
     ctx.arc(x, y, 16, 0, Math.PI * 2)
     ctx.fill()
 
-    checkCompletion()
+    drawCount.current++
+    if (drawCount.current % 12 === 0) {
+      checkCompletion()
+    }
   }
 
   const checkCompletion = () => {
@@ -119,6 +123,7 @@ function ScratchCard({ onComplete }) {
 
   const handleMouseUp = () => {
     setIsScratching(false)
+    checkCompletion()
   }
 
   return (

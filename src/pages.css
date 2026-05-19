@@ -2963,6 +2963,69 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Virtual controls for Arcade Game */
+.fight-virtual-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(28, 25, 23, 0.95);
+  border-top: 2px solid rgba(244, 63, 94, 0.2);
+  gap: 16px;
+}
+
+.virtual-movement {
+  display: flex;
+  gap: 8px;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.1s ease;
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+}
+
+.left-btn:active, .right-btn:active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+}
+
+.attack-btn {
+  background: linear-gradient(135deg, #f43f5e, #be123c);
+  border-color: rgba(244, 63, 94, 0.3);
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 8px rgba(244, 63, 94, 0.25);
+}
+
+.attack-btn:active {
+  background: linear-gradient(135deg, #e11d48, #9f1239);
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.5);
+}
+
+/* Hide controls on wide desktop with keyboards but show on screens below 1024px */
+@media (min-width: 1025px) {
+  .fight-virtual-controls {
+    display: none;
+  }
+}
+
 /* ===== Premium Menu Page Styles (Warm-Beige Theme) ===== */
 .menu-page {
   min-height: 100vh;
@@ -4400,4 +4463,166 @@
   font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.4;
+}
+
+/* ==========================================================================
+   GLOBAL RESPONSIVENESS OVERRIDES FOR THE ENTIRE WEBSITE
+   ========================================================================== */
+
+/* Tablet & Mobile Layout overrides (Max width 1024px) */
+@media (max-width: 1024px) {
+  .cart-layout {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-xl);
+  }
+
+  .track-container {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-xl);
+  }
+}
+
+/* Medium Mobile Layout overrides (Max width 768px) */
+@media (max-width: 768px) {
+  .home-header, .about-header, .menu-header, .cart-header, .checkout-header, .track-header {
+    flex-direction: column !important;
+    gap: var(--space-md) !important;
+    padding: var(--space-md) var(--space-md) !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .home-header-right, .menu-header-right, .about-header-right, .header-user {
+    flex-direction: column !important;
+    gap: var(--space-sm) !important;
+    width: 100% !important;
+    align-items: center !important;
+  }
+
+  .home-nav, .menu-nav, .about-nav {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: var(--space-md) !important;
+    width: 100% !important;
+  }
+
+  .home-user-actions, .header-user {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .avatar-dropdown {
+    justify-content: center !important;
+    width: 100% !important;
+    gap: var(--space-md) !important;
+  }
+
+  .home-container, .cart-content, .checkout-content, .track-container, .menu-controls, .menu-main {
+    padding: var(--space-md) !important;
+    width: 100% !important;
+  }
+
+  .hero-title {
+    font-size: 2.2rem !important;
+  }
+
+  .menu-hero .hero-content h2, .checkout-header h1, .cart-header h1, .track-header h1 {
+    font-size: 1.8rem !important;
+  }
+
+  .about-title {
+    font-size: 2.2rem !important;
+  }
+
+  .fight-game-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .scratch-card-container {
+    max-width: 100% !important;
+    padding: 10px !important;
+  }
+
+  .scratch-canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .modal-submit-btn, .modal-bypass-btn {
+    width: 100% !important;
+  }
+
+  .rider-actions-row {
+    flex-direction: column !important;
+    gap: var(--space-sm) !important;
+  }
+
+  .action-btn {
+    width: 100% !important;
+  }
+
+  .chat-bubble-wrapper {
+    max-width: 95% !important;
+  }
+}
+
+/* Small Mobile Layout overrides (Max width 480px) */
+@media (max-width: 480px) {
+  .cart-item-card {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: var(--space-sm) !important;
+    padding: var(--space-md) !important;
+    width: 100% !important;
+  }
+
+  .item-emoji, .cart-item-image {
+    margin: 0 auto !important;
+  }
+
+  .item-quantity-controls {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .cta-buttons, .hero-buttons, .checkout-buttons {
+    flex-direction: column !important;
+    gap: var(--space-sm) !important;
+    width: 100% !important;
+  }
+
+  .cta-btn, .hero-btn, .checkout-btn {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .conf-container {
+    padding: var(--space-md) !important;
+  }
+
+  .conf-header h1 {
+    font-size: 1.6rem !important;
+  }
+
+  .selected-phone {
+    font-size: 1.3rem !important;
+  }
+
+  .services-grid, .top-list-grid, .team-grid, .reviews-grid, .stats-grid, .menu-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-lg) !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .visual-captcha-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--space-sm) !important;
+  }
 }

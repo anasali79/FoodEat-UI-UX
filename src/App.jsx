@@ -1,3 +1,4 @@
+import Lenis from 'lenis'
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import HomePage from './pages/HomePage.jsx'
@@ -37,6 +38,38 @@ function AppContent() {
   // Tsunami wipe states
   const [isWashing, setIsWashing] = useState(false)
   const [isWiped, setIsWiped] = useState(false)
+
+  // Initialize Lenis smooth scroll
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      smoothTouch: false,
+    })
+
+    function raf(time) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+    window.lenis = lenis
+
+    return () => {
+      lenis.destroy()
+      window.lenis = null
+    }
+  }, [])
+
+  // Reset scroll to top on routing
+  useEffect(() => {
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { immediate: true })
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [location.pathname])
   
   // Cooldown track (2 minutes)
   const [lastTsunamiTime, setLastTsunamiTime] = useState(() => {

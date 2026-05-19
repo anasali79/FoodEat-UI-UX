@@ -378,6 +378,47 @@ function CursedFightGame({ onWin, onLose }) {
           </button>
         </div>
       )}
+
+      {/* Mobile Virtual Controls */}
+      <div className="fight-virtual-controls">
+        <div className="virtual-movement">
+          <button 
+            type="button"
+            className="control-btn left-btn"
+            onTouchStart={() => { keys.current.a = true }}
+            onTouchEnd={() => { keys.current.a = false }}
+            onMouseDown={() => { keys.current.a = true }}
+            onMouseUp={() => { keys.current.a = false }}
+            onMouseLeave={() => { keys.current.a = false }}
+          >
+            ◀ Left
+          </button>
+          <button 
+            type="button"
+            className="control-btn right-btn"
+            onTouchStart={() => { keys.current.d = true }}
+            onTouchEnd={() => { keys.current.d = false }}
+            onMouseDown={() => { keys.current.d = true }}
+            onMouseUp={() => { keys.current.d = false }}
+            onMouseLeave={() => { keys.current.d = false }}
+          >
+            Right ▶
+          </button>
+        </div>
+        <div className="virtual-action">
+          <button 
+            type="button"
+            className="control-btn attack-btn"
+            onTouchStart={() => { keys.current.space = true }}
+            onTouchEnd={() => { keys.current.space = false }}
+            onMouseDown={() => { keys.current.space = true }}
+            onMouseUp={() => { keys.current.space = false }}
+            onMouseLeave={() => { keys.current.space = false }}
+          >
+            🔥 ATTACK
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
