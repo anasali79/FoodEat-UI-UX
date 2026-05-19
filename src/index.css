@@ -1,0 +1,293 @@
+/* ===== CursedEats Global Styles ===== */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=Inter:wght@300;400;500;600;700;900&family=Creepster&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Premium warm-beige light-mode backgrounds */
+  --bg-primary: #dfdcd6;
+  --bg-secondary: #e6e3dd;
+  --bg-card: rgba(255, 255, 255, 0.45);
+  --bg-card-hover: rgba(255, 255, 255, 0.65);
+  --bg-glass: rgba(255, 255, 255, 0.55);
+  
+  /* Inputs & Borders */
+  --bg-input: rgba(0, 0, 0, 0.04);
+  --bg-input-focus: rgba(255, 255, 255, 0.8);
+  --border-input: rgba(0, 0, 0, 0.08);
+  --border-color: rgba(0, 0, 0, 0.06);
+  --border-color-light: rgba(0, 0, 0, 0.03);
+  
+  /* Brand colors matching home page */
+  --neon-pink: #ea580c; /* Orange */
+  --neon-purple: #f97316; /* Lighter Orange */
+  --neon-cyan: #166534; /* Green */
+  --neon-orange: #d97706; /* Amber */
+  --neon-yellow: #ca8a04;
+  --neon-blue: #2563eb;
+  --neon-red: #dc2626;
+  
+  /* Gradients */
+  --gradient-chaos: linear-gradient(135deg, #ea580c, #166534, #f97316);
+  --gradient-fire: linear-gradient(135deg, #ea580c, #f97316);
+  --gradient-poison: linear-gradient(135deg, #166534, #ea580c);
+  --gradient-dark: linear-gradient(180deg, #dfdcd6, #e6e3dd);
+  
+  /* Text */
+  --text-primary: #1e1b18; /* Dark charcoal/brown */
+  --text-secondary: #5a544d; /* Muted brown */
+  --text-muted: #8c8276;
+  --text-accent: #ea580c;
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-glow-pink: 0 0 20px rgba(255, 45, 117, 0.3);
+  --shadow-glow-purple: 0 0 20px rgba(168, 85, 247, 0.3);
+  --shadow-glow-cyan: 0 0 20px rgba(6, 214, 160, 0.3);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.6);
+  
+  /* Fonts */
+  --font-primary: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Bangers', 'Creepster', cursive;
+  --font-cursed: 'Comic Neue', 'Comic Sans MS', cursive;
+  --font-spooky: 'Creepster', cursive;
+  
+  /* Transitions */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 150ms var(--ease-smooth);
+  --transition-normal: 300ms var(--ease-smooth);
+  --transition-slow: 500ms var(--ease-smooth);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(255, 71, 87, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 127, 80, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(46, 213, 115, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+a {
+  color: var(--neon-pink);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--neon-purple);
+}
+
+button {
+  font-family: var(--font-primary);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition-normal);
+}
+
+input, select, textarea {
+  font-family: var(--font-primary);
+  outline: none;
+  border: none;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-purple);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-pink);
+}
+
+/* ===== Utility Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes rainbow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes neonPulse {
+  0%, 100% { 
+    box-shadow: 0 0 5px rgba(255, 45, 117, 0.5), 0 0 20px rgba(255, 45, 117, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 10px rgba(255, 45, 117, 0.8), 0 0 40px rgba(255, 45, 117, 0.4);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.1); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: var(--neon-pink);
+  color: white;
+}
+
+/* ===== Global Background Blobs ===== */
+.global-blur-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: -1;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.blob-green {
+  top: 10%;
+  left: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(198, 218, 203, 0.8) 0%, rgba(220, 235, 225, 0) 70%);
+}
+
+.blob-orange {
+  top: 30%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(239, 185, 137, 0.85) 0%, rgba(245, 210, 180, 0) 70%);
+}
+
+.blob-peach {
+  bottom: 10%;
+  left: 15%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(245, 200, 150, 0.7) 0%, rgba(245, 225, 210, 0) 70%);
+}
+
+/* Global Logo Styling matching Home Page */
+.home-logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #c98a44;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+.home-logo:hover {
+  transform: scale(1.05);
+}
