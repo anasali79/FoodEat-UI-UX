@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import HomePage from './pages/HomePage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import MenuPage from './pages/MenuPage.jsx'
@@ -26,11 +26,23 @@ function ProtectedRoute({ children }) {
 
 function AppContent() {
   const { isLoggedIn } = useAuth()
+  const location = useLocation()
+  
   const [showCookie, setShowCookie] = useState(() => {
     return localStorage.getItem('cookiesAccepted') !== 'true'
   })
   const [showAd, setShowAd] = useState(false)
   const [showVirus, setShowVirus] = useState(false)
+  
+  // Tsunami wipe states
+  const [isWashing, setIsWashing] = useState(false)
+  const [isWiped, setIsWiped] = useState(false)
+  
+  // Cooldown track (2 minutes)
+  const [lastTsunamiTime, setLastTsunamiTime] = useState(() => {
+    const saved = localStorage.getItem('lastTsunamiTime')
+    return saved ? parseInt(saved, 10) : 0
+  })
 
   useEffect(() => {
     // Show fake ad after 15 seconds
@@ -53,8 +65,91 @@ function AppContent() {
     return () => clearInterval(interval)
   }, [])
 
+  const handleTsunamiTrigger = () => {
+    if (isWashing || isWiped) return
+    setIsWashing(true)
+    
+    // Save last time
+    const now = Date.now()
+    setLastTsunamiTime(now)
+    localStorage.setItem('lastTsunamiTime', now.toString())
+    
+    try {
+      const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav')
+      audio.volume = 0.4
+      audio.play().catch(e => {})
+    } catch(e) {}
+
+    setTimeout(() => {
+      setIsWiped(true)
+      setIsWashing(false)
+    }, 2800)
+  }
+
+  // Auto trigger on page navigation if 2 minutes passed
+  useEffect(() => {
+    const timeSinceLast = Date.now() - lastTsunamiTime
+    if (timeSinceLast > 120000) { // 2 minutes
+      // Short delay after entering page so they see the page first
+      const timer = setTimeout(() => {
+        handleTsunamiTrigger()
+      }, 1500)
+      return () => clearTimeout(timer)
+    }
+  }, [location.pathname])
+
+  // Auto trigger in background if they stay on same page
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const timeSinceLast = Date.now() - lastTsunamiTime
+      if (timeSinceLast > 120000) {
+        handleTsunamiTrigger()
+      }
+    }, 15000)
+    return () => clearInterval(interval)
+  }, [lastTsunamiTime])
+
+  const handleRestore = () => {
+    setIsWiped(false)
+    setIsWashing(false)
+    // Add brief cooldown cushion to avoid immediate re-trigger on next action
+    const cushionTime = Date.now()
+    setLastTsunamiTime(cushionTime)
+    localStorage.setItem('lastTsunamiTime', cushionTime.toString())
+  }
+
+  if (isWiped) {
+    return (
+      <div className="tsunami-blank-screen">
+        {/* Rewind & Fix Page Button at the top */}
+        <button 
+          className="tsunami-rewind-top-btn" 
+          onClick={handleRestore}
+          title="Rewind Wave & Fix Page"
+        >
+          🔁 Rewind & Fix Page
+        </button>
+
+        <div className="blank-screen-content">
+          <span className="peace-emoji">🧘‍♂️✨</span>
+          <h1>All is Calm. All is Clean.</h1>
+          <p>
+            The great digital tsunami has swept away your unhinged cravings, the chaos of hidden surcharges, 
+            and the screaming cats of FOODEAT.
+          </p>
+          <p className="subtext">
+            Breathe in. Breathe out. You are finally free from the pizza demons.
+          </p>
+          <button className="restore-btn" onClick={handleRestore}>
+            Return to Chaos 🍕
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <>
+    <div className={isWashing ? "tsunami-washing-mode" : ""}>
       <RageCursor />
       <NotificationSpam />
       <CartThief />
@@ -71,6 +166,22 @@ function AppContent() {
       <div className="global-blur-blob blob-orange"></div>
       <div className="global-blur-blob blob-peach"></div>
 
+      {/* Floating Tsunami Trigger Button */}
+      <button 
+        className="floating-tsunami-trigger" 
+        onClick={handleTsunamiTrigger} 
+        title="Trigger Tsunami Page-Wipe"
+      >
+        🌊
+      </button>
+
+      {/* Tsunami Wave Graphic */}
+      {isWashing && (
+        <div className="tsunami-wave">
+          <div className="wave-text">🌊 TSUNAMI INCOMING 🌊</div>
+        </div>
+      )}
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
@@ -82,7 +193,7 @@ function AppContent() {
         <Route path="/confirmation" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
         <Route path="/track" element={<ProtectedRoute><TrackOrderPage /></ProtectedRoute>} />
       </Routes>
-    </>
+    </div>
   )
 }
 

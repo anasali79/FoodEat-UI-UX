@@ -35,7 +35,8 @@ const VISUAL_ITEMS = [
 
 function CursedFightGame({ onWin, onLose }) {
   const canvasRef = useRef(null)
-  const [status, setStatus] = useState('playing') // 'playing', 'win', 'lose'
+  const [round, setRound] = useState(1)
+  const [status, setStatus] = useState('playing') // 'playing', 'round_clear', 'win', 'lose'
   const keys = useRef({ a: false, d: false, space: false })
 
   useEffect(() => {
@@ -69,7 +70,7 @@ function CursedFightGame({ onWin, onLose }) {
 
     // Physics vars
     let px = 80
-    let py = 180
+    let py = 280
     let pWidth = 50
     let pHeight = 80
     let pHealth = 100
@@ -77,14 +78,21 @@ function CursedFightGame({ onWin, onLose }) {
     let pAttackCooldown = 0
     let pFlash = 0
 
-    let ex = 470
-    let ey = 180
+    let ex = 670
+    let ey = 280
     let eWidth = 50
     let eHeight = 80
-    let eHealth = 100
+    
+    // Enemy scaling based on round
+    const maxEnemyHealth = 100 + (round - 1) * 30
+    let eHealth = maxEnemyHealth
     let eAttacking = false
     let eAttackCooldown = 0
     let eFlash = 0
+
+    const enemySpeed = 0.8 + (round - 1) * 0.45
+    const enemyDamage = 8 + (round - 1) * 3
+    const enemyAttackProb = 0.01 + (round - 1) * 0.005
 
     let particles = []
 
@@ -120,15 +128,15 @@ function CursedFightGame({ onWin, onLose }) {
     let gameEnded = false
 
     const loop = () => {
-      if (gameEnded) return
+      if (gameEnded || status !== 'playing') return
 
       // Update positions
-      if (keys.current.a) px -= 2.2
-      if (keys.current.d) px += 2.2
+      if (keys.current.a) px -= 2.6
+      if (keys.current.d) px += 2.6
 
       // Boundary checks
       if (px < 0) px = 0
-      if (px > 600 - pWidth) px = 600 - pWidth
+      if (px > 800 - pWidth) px = 800 - pWidth
 
       // Attack triggers
       if (keys.current.space && pAttackCooldown <= 0) {
@@ -142,8 +150,8 @@ function CursedFightGame({ onWin, onLose }) {
           eFlash = 10
           playSound(180, 'sawtooth', 0.12)
           createHitParticles(ex + eWidth / 2, ey + eHeight / 2)
-          ex += 20
-          if (ex > 600 - eWidth) ex = 600 - eWidth
+          ex += 25
+          if (ex > 800 - eWidth) ex = 800 - eWidth
         }
       }
 
@@ -151,25 +159,25 @@ function CursedFightGame({ onWin, onLose }) {
       const distance = Math.abs((px + pWidth / 2) - (ex + eWidth / 2))
       if (distance > 60) {
         if (ex > px + pWidth / 2) {
-          ex -= 0.8
+          ex -= enemySpeed
         } else {
-          ex += 0.8
+          ex += enemySpeed
         }
       }
 
       // Enemy Attack
       if (distance < 85 && eAttackCooldown <= 0) {
-        if (Math.random() < 0.01) {
+        if (Math.random() < enemyAttackProb) {
           eAttacking = true
           eAttackCooldown = 22
           playSound(350, 'triangle', 0.1)
 
           if (distance < 85) {
-            pHealth -= 8
+            pHealth -= enemyDamage
             pFlash = 10
             playSound(150, 'sawtooth', 0.15)
             createHitParticles(px + pWidth / 2, py + pHeight / 2)
-            px -= 15
+            px -= 20
             if (px < 0) px = 0
           }
         }
@@ -202,56 +210,60 @@ function CursedFightGame({ onWin, onLose }) {
         eHealth = 0
         gameEnded = true
         playSound(650, 'sine', 0.5)
-        setStatus('win')
+        if (round < 3) {
+          setStatus('round_clear')
+        } else {
+          setStatus('win')
+        }
       }
 
       // DRAWING
-      ctx.clearRect(0, 0, 600, 300)
+      ctx.clearRect(0, 0, 800, 400)
 
       // Ring Floor
       ctx.fillStyle = '#292524'
-      ctx.fillRect(0, 0, 600, 300)
+      ctx.fillRect(0, 0, 800, 400)
       ctx.fillStyle = '#78716c'
-      ctx.fillRect(0, 260, 600, 40)
+      ctx.fillRect(0, 360, 800, 40)
       ctx.fillStyle = '#f43f5e'
-      ctx.fillRect(0, 256, 600, 4)
+      ctx.fillRect(0, 356, 800, 4)
 
       // Arena cage background lines
       ctx.strokeStyle = 'rgba(244, 63, 94, 0.1)'
       ctx.lineWidth = 2
-      for (let i = 0; i < 600; i += 40) {
+      for (let i = 0; i < 800; i += 40) {
         ctx.beginPath()
         ctx.moveTo(i, 0)
-        ctx.lineTo(i, 256)
+        ctx.lineTo(i, 356)
         ctx.stroke()
       }
 
       // Draw HUD (Health bars)
       // Player
       ctx.fillStyle = '#444'
-      ctx.fillRect(20, 20, 200, 20)
+      ctx.fillRect(20, 20, 250, 20)
       ctx.fillStyle = pFlash > 0 ? '#ef4444' : '#22c55e'
-      ctx.fillRect(20, 20, Math.max(0, pHealth * 2), 20)
+      ctx.fillRect(20, 20, Math.max(0, pHealth * 2.5), 20)
       ctx.strokeStyle = '#fff'
-      ctx.strokeRect(20, 20, 200, 20)
+      ctx.strokeRect(20, 20, 250, 20)
       ctx.fillStyle = '#fff'
       ctx.font = 'bold 12px Outfit, sans-serif'
       ctx.fillText(`YOU (🧑‍🍳 CHEF): ${pHealth}%`, 20, 55)
 
       // Enemy
       ctx.fillStyle = '#444'
-      ctx.fillRect(380, 20, 200, 20)
+      ctx.fillRect(530, 20, 250, 20)
       ctx.fillStyle = eFlash > 0 ? '#ffffff' : '#e11d48'
-      ctx.fillRect(380, 20, Math.max(0, eHealth * 2), 20)
+      ctx.fillRect(530, 20, Math.max(0, (eHealth / maxEnemyHealth) * 250), 20)
       ctx.strokeStyle = '#fff'
-      ctx.strokeRect(380, 20, 200, 20)
+      ctx.strokeRect(530, 20, 250, 20)
       ctx.fillStyle = '#fff'
-      ctx.fillText(`CURSED BOT (🤖): ${eHealth}%`, 380, 55)
+      ctx.fillText(`CURSED BOT (🤖 ROUND ${round}): ${Math.round((eHealth / maxEnemyHealth) * 100)}%`, 530, 55)
 
       // Controls overlay
       ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'
       ctx.font = '11px Courier New'
-      ctx.fillText("[A/D] Move | [SPACE] Punch", 230, 50)
+      ctx.fillText(`[A/D] Move | [SPACE] Punch | ROUND ${round} OF 3`, 310, 50)
 
       // Draw Player (Chef)
       ctx.save()
@@ -317,27 +329,41 @@ function CursedFightGame({ onWin, onLose }) {
         ctx.fillRect(p.x, p.y, 4, 4)
       })
 
-      if (!gameEnded) {
+      if (!gameEnded && status === 'playing') {
         animationId = requestAnimationFrame(loop)
       }
     }
 
     loop()
     return () => cancelAnimationFrame(animationId)
-  }, [status])
+  }, [status, round])
+
+  const nextRound = () => {
+    setRound(prev => prev + 1)
+    setStatus('playing')
+  }
 
   return (
     <div className="fight-game-container">
       <canvas
         ref={canvasRef}
-        width={600}
-        height={300}
+        width={800}
+        height={400}
         className="fight-canvas"
       />
+      {status === 'round_clear' && (
+        <div className="fight-overlay win">
+          <h2>🏆 ROUND {round} CLEARED!</h2>
+          <p>The Cursed Server Bot has retreated temporarily. Prepare for the next round!</p>
+          <button className="confirm-btn" onClick={nextRound}>
+            Start Round {round + 1}
+          </button>
+        </div>
+      )}
       {status === 'win' && (
         <div className="fight-overlay win">
-          <h2>🏆 VICTORY!</h2>
-          <p>You beat the Cursed Server Bot in honorable combat!</p>
+          <h2>🏆 GRAND VICTORY!</h2>
+          <p>You beat the Cursed Server Bot in all 3 rounds of honorable combat!</p>
           <button className="confirm-btn" onClick={onWin}>
             Verify and Log In
           </button>
@@ -345,7 +371,7 @@ function CursedFightGame({ onWin, onLose }) {
       )}
       {status === 'lose' && (
         <div className="fight-overlay lose">
-          <h2>💀 NOOB!</h2>
+          <h2>💀 NOOB! (Defeated in Round {round})</h2>
           <p>You were defeated by the Cursed Bot. You are not worthy of ordering food.</p>
           <button className="confirm-btn reset" onClick={onLose}>
             Try Verification Again

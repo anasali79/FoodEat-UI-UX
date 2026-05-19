@@ -18,6 +18,8 @@ This document tracks all the custom-built, intentionally frustrating, and hilari
 | **Chaos Surcharge & Hidden Fees** | Cart / Checkout | Calculated automatically in total breakdown | 💸 🤬 🤬 🤬 |
 | **Despair Tip Options** | Checkout Page | Presenting slider or negative/outrageous tips | 💰 🤬 🤬 |
 | **The Detour-Loving Rider** | Track Order Page | Real-time tracking updates of delivery progress | 🛵 🗺️ 🤬 🤬 |
+| **Tekken Verification (3 Rounds)**| Login / Register | Triggered during signup/login sequence | 🥋 🤬 🤬 🤬 🤬 |
+| **Digital Tsunami Wipe** | Anywhere | Clicking the floating blue 🌊 button in the bottom-left | 🌊 💆‍♂️ (Peaceful) |
 
 ---
 
@@ -72,3 +74,14 @@ This document tracks all the custom-built, intentionally frustrating, and hilari
     *   *75%:* Rider stopped to clear up an argument with their ex.
     *   *95%:* Rider is outside your door eating one of your fries.
 *   **The Reset:** When progress reaches 100%, the active order is cleared out and reset.
+
+### 9. Tekken Verification (3 Rounds of Honorable Combat) 🥋
+*   **Code Location:** `src/pages/LoginPage.jsx`
+*   **How it works:** To verify you are not a robot, you must fight the Cursed Server Bot in an arcade fighting game. The canvas size is enlarged to **800x400** to make it look premium.
+*   **The Frustration:** You must win **3 consecutive rounds**. If you lose any round, you are immediately thrown back to the first step of the verification sequence (Math captcha). The enemy speed, attack probability, and damage increase with each round!
+
+### 10. Digital Tsunami Wipe (Reset Sanity) 🌊
+*   **Code Location:** `src/App.jsx`, `src/components.css`
+*   **How it works:** A blue floating 🌊 button sits in the bottom-left corner of the viewport. Clicking it triggers an app-wide cleanse.
+*   **The Animation:** A giant ocean wave sweeps up the entire viewport. As the wave sweeps, all buttons, headers, inputs, cards, and images get a float-and-drift animation, rotating and translating off-screen like they are washed away.
+*   **The Blank State:** Once washed away, the screen turns entirely blank white. A peaceful message fades in to soothe the user's mind, with a button to return to the chaotic food app when they are ready.

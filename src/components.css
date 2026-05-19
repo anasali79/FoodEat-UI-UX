@@ -1,4 +1,4 @@
-﻿.cart-thief {
+.cart-thief {
   position: fixed;
   bottom: 60px;
   z-index: 99990;
@@ -745,4 +745,230 @@ body.rage-active * {
 
 .virus-ok-btn:hover {
   transform: scale(1.05);
+}
+
+/* ===== Tsunami Wave Page-Wipe Styles ===== */
+.floating-tsunami-trigger {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  color: white;
+  border: none;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+  z-index: 999990;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-tsunami-trigger:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 8px 25px rgba(0, 102, 255, 0.6);
+}
+
+.floating-tsunami-trigger:active {
+  transform: scale(0.95);
+}
+
+.tsunami-wave {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -120%;
+  height: 120%;
+  background: linear-gradient(0deg, #0033aa 0%, #0055ff 50%, rgba(0, 210, 255, 0.85) 90%, rgba(255, 255, 255, 0) 100%);
+  z-index: 999998;
+  pointer-events: none;
+  animation: waveSweep 3.2s ease-in-out forwards;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wave-text {
+  font-family: 'Bangers', cursive;
+  font-size: 3rem;
+  color: white;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 30px #00d2ff;
+  letter-spacing: 2px;
+  animation: waveTextPulse 0.5s infinite alternate;
+}
+
+@keyframes waveSweep {
+  0% {
+    bottom: -120%;
+  }
+  40% {
+    bottom: -20%;
+  }
+  70% {
+    bottom: 0%;
+  }
+  100% {
+    bottom: 120%;
+  }
+}
+
+@keyframes waveTextPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+/* Float and wash away animation for all elements */
+.tsunami-washing-mode button,
+.tsunami-washing-mode input,
+.tsunami-washing-mode select,
+.tsunami-washing-mode a,
+.tsunami-washing-mode h1,
+.tsunami-washing-mode h2,
+.tsunami-washing-mode h3,
+.tsunami-washing-mode img,
+.tsunami-washing-mode .menu-card,
+.tsunami-washing-mode .cart-item,
+.tsunami-washing-mode .brand-logo,
+.tsunami-washing-mode .floating-tsunami-trigger {
+  animation: elementWashAway 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+  pointer-events: none !important;
+}
+
+@keyframes elementWashAway {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(5px, -10px) rotate(2deg);
+  }
+  40% {
+    transform: translate(-15px, -80px) rotate(-15deg) scale(0.9);
+  }
+  60% {
+    transform: translate(50px, -250px) rotate(45deg) scale(0.7);
+    opacity: 0.8;
+  }
+  80% {
+    transform: translate(-100px, -500px) rotate(-90deg) scale(0.4);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(0px, -1200px) rotate(180deg) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Blank Screen Page Styles */
+.tsunami-blank-screen {
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  animation: blankScreenFadeIn 1.5s ease-out;
+}
+
+.blank-screen-content {
+  max-width: 600px;
+  color: #1c1917;
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.peace-emoji {
+  font-size: 5rem;
+  animation: peaceFloat 3s ease-in-out infinite;
+}
+
+.blank-screen-content h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #0369a1;
+  letter-spacing: -0.5px;
+}
+
+.blank-screen-content p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.blank-screen-content .subtext {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.restore-btn {
+  background: linear-gradient(135deg, #ea580c, #db2777);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(234, 88, 12, 0.2);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.restore-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(234, 88, 12, 0.35);
+}
+
+@keyframes blankScreenFadeIn {
+  from { opacity: 0; background: #0033aa; }
+  to { opacity: 1; background: white; }
+}
+
+@keyframes peaceFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.tsunami-rewind-top-btn {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+  z-index: 1000000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.tsunami-rewind-top-btn:hover {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-color: #38bdf8;
+  box-shadow: 0 6px 25px rgba(56, 189, 248, 0.3);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.tsunami-rewind-top-btn:active {
+  transform: translateX(-50%) translateY(0);
 }
